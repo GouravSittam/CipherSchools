@@ -1,4 +1,4 @@
-import CipherStudio from "@/components/CipherStudio";
+import CipherStudio from "../components/CipherStudio";
 
 export default function Home() {
   return (
