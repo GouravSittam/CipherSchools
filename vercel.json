@@ -6,5 +6,9 @@
     "src/app/api/**/*.ts": {
       "maxDuration": 30
     }
+  },
+  "env": {
+    "MONGODB_URI": "@mongodb_uri",
+    "DATABASE_NAME": "@database_name"
   }
 }

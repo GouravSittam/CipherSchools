@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProjectById, updateProject, deleteProject } from '@/lib/database/projects';
-import { ProjectUpdateInput } from '@/lib/models/Project';
+import { getProjectById, updateProject, deleteProject } from '../../../../lib/database/projects';
+import { ProjectUpdateInput } from '../../../../lib/models/Project';
 
 export async function GET(
   request: NextRequest,

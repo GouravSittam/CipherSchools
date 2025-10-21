@@ -8,7 +8,7 @@ import {
   SandpackPreview,
   SandpackFileExplorer,
 } from "@codesandbox/sandpack-react";
-import { ProjectService } from "@/lib/services/projectService";
+import { ProjectService } from "../lib/services/projectService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

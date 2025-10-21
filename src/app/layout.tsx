@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
-import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
@@ -23,7 +22,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="h-screen w-screen overflow-hidden">
       <body className="antialiased h-screen w-screen overflow-hidden m-0 p-0">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <ErrorReporter />
           <Script
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
             strategy="afterInteractive"
