@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import Script from "next/script";
-// import { ThemeProvider } from "../providers/ThemeProvider";
-// import { Toaster } from "../components/ui/sonner";
+import { ThemeProvider } from "../providers/ThemeProvider";
+import { Toaster } from "../components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "CipherStudio - Browser-Based React IDE",
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="h-screen w-screen overflow-hidden">
       <body className="antialiased h-screen w-screen overflow-hidden m-0 p-0">
-        <div>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Script
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
             strategy="afterInteractive"
@@ -35,8 +35,9 @@ export default function RootLayout({
           <div className="h-screen w-screen overflow-hidden">
             {children}
           </div>
+          <Toaster />
           <VisualEditsMessenger />
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );
