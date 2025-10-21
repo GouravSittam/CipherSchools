@@ -8,6 +8,7 @@ import {
   SandpackPreview,
   SandpackFileExplorer,
 } from "@codesandbox/sandpack-react";
+import { ProjectService } from "@/lib/services/projectService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -141,18 +142,53 @@ export default function CipherStudio() {
 
   const currentProject = projects.find((p) => p.id === currentProjectId) || projects[0];
 
-  useEffect(() => {
-    setMounted(true);
-    // Load projects from localStorage
-    const saved = localStorage.getItem("cipherstudio-projects");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setProjects(parsed);
-      } catch (e) {
-        console.error("Failed to load projects", e);
+  const loadProjects = async () => {
+    try {
+      const loadedProjects = await ProjectService.getProjects();
+      if (loadedProjects.length > 0) {
+        setProjects(loadedProjects);
+      }
+    } catch (error) {
+      console.error("Failed to load projects from database:", error);
+      // Fallback to localStorage if database fails
+      const saved = localStorage.getItem("cipherstudio-projects");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setProjects(parsed);
+        } catch (e) {
+          console.error("Failed to load projects from localStorage", e);
+        }
       }
     }
+  };
+
+  const saveProjects = async () => {
+    try {
+      // Save each project individually to MongoDB
+      for (const project of projects) {
+        try {
+          await ProjectService.updateProject(project.id, {
+            name: project.name,
+            files: project.files,
+            activeFile: project.activeFile,
+            autoSave: project.autoSave,
+          });
+        } catch (error) {
+          console.error(`Failed to save project ${project.name}:`, error);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to save projects to database:", error);
+      // Fallback to localStorage
+      localStorage.setItem("cipherstudio-projects", JSON.stringify(projects));
+    }
+  };
+
+  useEffect(() => {
+    setMounted(true);
+    // Load projects from MongoDB
+    loadProjects();
 
     // Keyboard shortcuts
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -174,8 +210,8 @@ export default function CipherStudio() {
 
   useEffect(() => {
     if (mounted && currentProject?.autoSave !== false) {
-      // Auto-save projects to localStorage
-      localStorage.setItem("cipherstudio-projects", JSON.stringify(projects));
+      // Auto-save projects to MongoDB
+      saveProjects();
     }
   }, [projects, mounted, currentProject?.autoSave]);
 
@@ -239,14 +275,14 @@ export default function CipherStudio() {
     toast.success(`Folder ${folderName} created!`);
   };
 
-  const createNewProject = () => {
+  const createNewProject = async () => {
     if (!newProjectName) return;
 
-    const newProject: Project = {
-      id: Date.now().toString(),
-      name: newProjectName,
-      files: {
-        "/App.js": `export default function App() {
+    try {
+      const newProject = await ProjectService.createProject({
+        name: newProjectName,
+        files: {
+          "/App.js": `export default function App() {
   return (
     <div style={{ padding: '20px', fontFamily: 'system-ui' }}>
       <h1>${newProjectName}</h1>
@@ -254,21 +290,25 @@ export default function CipherStudio() {
     </div>
   );
 }`,
-        "/styles.css": `body {
+          "/styles.css": `body {
   margin: 0;
   padding: 20px;
   font-family: system-ui, -apple-system, sans-serif;
 }`,
-      },
-      activeFile: "/App.js",
-      autoSave: true,
-    };
+        },
+        activeFile: "/App.js",
+        autoSave: true,
+      });
 
-    setProjects((prev) => [...prev, newProject]);
-    setCurrentProjectId(newProject.id);
-    setNewProjectName("");
-    setIsProjectDialogOpen(false);
-    toast.success(`Project "${newProjectName}" created!`);
+      setProjects((prev) => [...prev, newProject]);
+      setCurrentProjectId(newProject.id);
+      setNewProjectName("");
+      setIsProjectDialogOpen(false);
+      toast.success(`Project "${newProjectName}" created!`);
+    } catch (error) {
+      console.error("Failed to create project:", error);
+      toast.error("Failed to create project. Please try again.");
+    }
   };
 
   const deleteFile = (fileName: string) => {
@@ -326,15 +366,22 @@ export default function CipherStudio() {
     setIsRenameDialogOpen(true);
   };
 
-  const deleteProject = () => {
+  const deleteProject = async () => {
     if (projects.length <= 1) {
       toast.error("Cannot delete the last project");
       return;
     }
-    const projectName = currentProject.name;
-    setProjects((prev) => prev.filter((p) => p.id !== currentProjectId));
-    setCurrentProjectId(projects[0].id === currentProjectId ? projects[1].id : projects[0].id);
-    toast.success(`Project "${projectName}" deleted!`);
+    
+    try {
+      await ProjectService.deleteProject(currentProjectId);
+      const projectName = currentProject.name;
+      setProjects((prev) => prev.filter((p) => p.id !== currentProjectId));
+      setCurrentProjectId(projects[0].id === currentProjectId ? projects[1].id : projects[0].id);
+      toast.success(`Project "${projectName}" deleted!`);
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+      toast.error("Failed to delete project. Please try again.");
+    }
   };
 
   const exportProject = () => {
@@ -378,9 +425,14 @@ export default function CipherStudio() {
     toast.success(enabled ? "Auto-save enabled" : "Auto-save disabled");
   };
 
-  const manualSave = () => {
-    localStorage.setItem("cipherstudio-projects", JSON.stringify(projects));
-    toast.success("Project saved manually!");
+  const manualSave = async () => {
+    try {
+      await saveProjects();
+      toast.success("Project saved manually!");
+    } catch (error) {
+      console.error("Failed to save project:", error);
+      toast.error("Failed to save project. Please try again.");
+    }
   };
 
   if (!mounted) {
