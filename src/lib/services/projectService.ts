@@ -47,10 +47,18 @@ export class ProjectService {
     userId?: string
   ): Promise<Project> {
     const url = userId ? `${API_BASE}/${id}?userId=${userId}` : `${API_BASE}/${id}`;
-    return this.request<Project>(url, {
-      method: 'PUT',
-      body: JSON.stringify(updateData),
-    });
+    try {
+      return await this.request<Project>(url, {
+        method: 'PUT',
+        body: JSON.stringify(updateData),
+      });
+    } catch (error: any) {
+      // If project doesn't exist (404), throw a specific error
+      if (error.message?.includes('404') || error.message?.includes('not found')) {
+        throw new Error('PROJECT_NOT_FOUND');
+      }
+      throw error;
+    }
   }
 
   static async deleteProject(id: string, userId?: string): Promise<void> {

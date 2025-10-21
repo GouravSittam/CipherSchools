@@ -4,13 +4,14 @@ import { ProjectUpdateInput } from '@/lib/models/Project';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId') || undefined;
+    const { id } = await params;
     
-    const project = await getProjectById(params.id, userId);
+    const project = await getProjectById(id, userId);
     
     if (!project) {
       return NextResponse.json(
@@ -31,14 +32,15 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body: ProjectUpdateInput = await request.json();
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId') || undefined;
+    const { id } = await params;
     
-    const project = await updateProject(params.id, body, userId);
+    const project = await updateProject(id, body, userId);
     
     if (!project) {
       return NextResponse.json(
@@ -59,13 +61,14 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId') || undefined;
+    const { id } = await params;
     
-    const deleted = await deleteProject(params.id, userId);
+    const deleted = await deleteProject(id, userId);
     
     if (!deleted) {
       return NextResponse.json(

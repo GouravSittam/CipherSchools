@@ -19,18 +19,29 @@ if (process.env.NODE_ENV === 'development') {
 
   if (!globalWithMongo._mongoClientPromise) {
     client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
+    globalWithMongo._mongoClientPromise = client.connect().then((connectedClient) => {
+      console.log('🚀 MongoDB client connected successfully');
+      return connectedClient;
+    });
   }
   clientPromise = globalWithMongo._mongoClientPromise;
 } else {
   // In production mode, it's best to not use a global variable.
   client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+  clientPromise = client.connect().then((connectedClient) => {
+    console.log('🚀 MongoDB client connected successfully');
+    return connectedClient;
+  });
 }
 
 export default clientPromise;
 
 export async function getDatabase(): Promise<Db> {
   const client = await clientPromise;
-  return client.db(process.env.DATABASE_NAME || 'cipherstudio');
+  const db = client.db(process.env.DATABASE_NAME || 'cipherstudio');
+  
+  // Log successful connection
+  console.log('✅ Connected to MongoDB database:', db.databaseName);
+  
+  return db;
 }

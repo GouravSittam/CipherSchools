@@ -144,20 +144,26 @@ export default function CipherStudio() {
 
   const loadProjects = async () => {
     try {
+      console.log("📡 Loading projects from MongoDB...");
       const loadedProjects = await ProjectService.getProjects();
       if (loadedProjects.length > 0) {
         setProjects(loadedProjects);
+        console.log(`✅ Loaded ${loadedProjects.length} projects from database`);
+      } else {
+        console.log("📝 No projects found in database, using default projects");
       }
     } catch (error) {
-      console.error("Failed to load projects from database:", error);
+      console.error("❌ Failed to load projects from database:", error);
+      console.log("🔄 Falling back to localStorage...");
       // Fallback to localStorage if database fails
       const saved = localStorage.getItem("cipherstudio-projects");
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
           setProjects(parsed);
+          console.log("✅ Loaded projects from localStorage fallback");
         } catch (e) {
-          console.error("Failed to load projects from localStorage", e);
+          console.error("❌ Failed to load projects from localStorage", e);
         }
       }
     }
@@ -168,18 +174,36 @@ export default function CipherStudio() {
       // Save each project individually to MongoDB
       for (const project of projects) {
         try {
-          await ProjectService.updateProject(project.id, {
-            name: project.name,
-            files: project.files,
-            activeFile: project.activeFile,
-            autoSave: project.autoSave,
-          });
+          // First try to update the project
+          try {
+            await ProjectService.updateProject(project.id, {
+              name: project.name,
+              files: project.files,
+              activeFile: project.activeFile,
+              autoSave: project.autoSave,
+            });
+            console.log(`✅ Updated project ${project.name} in database`);
+          } catch (updateError: any) {
+            // If update fails because project doesn't exist, create the project
+            if (updateError.message === 'PROJECT_NOT_FOUND') {
+              console.log(`📝 Project ${project.name} not found, creating new project...`);
+              await ProjectService.createProject({
+                name: project.name,
+                files: project.files,
+                activeFile: project.activeFile,
+                autoSave: project.autoSave,
+              });
+              console.log(`✅ Created project ${project.name} in database`);
+            } else {
+              throw updateError; // Re-throw if it's a different error
+            }
+          }
         } catch (error) {
-          console.error(`Failed to save project ${project.name}:`, error);
+          console.error(`❌ Failed to save project ${project.name}:`, error);
         }
       }
     } catch (error) {
-      console.error("Failed to save projects to database:", error);
+      console.error("❌ Failed to save projects to database:", error);
       // Fallback to localStorage
       localStorage.setItem("cipherstudio-projects", JSON.stringify(projects));
     }
