@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    optimizePackageImports: ['@codesandbox/sandpack-react'],
+  }
 };
 
 export default nextConfig;
