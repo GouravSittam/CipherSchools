@@ -1,6 +1,8 @@
 # CipherStudio – Browser‑Based React IDE (Next.js)
 
-CipherStudio is a full‑screen, responsive, browser‑based IDE for building and previewing small React projects in real time. It’s powered by Next.js (App Router) and CodeSandbox Sandpack, with a modern UI built using Tailwind CSS and a Shadcn‑inspired component set.
+**Author:** Gourav Chaudhary
+
+CipherStudio is a full‑screen, responsive, browser‑based IDE for building and previewing small React projects in real time. It's powered by Next.js (App Router) and CodeSandbox Sandpack, with a modern UI built using Tailwind CSS and a Shadcn‑inspired component set.
 
 The app opens to a complete IDE layout: a file explorer, code editor, and live preview. Projects are stored in localStorage and can be exported/imported as JSON.
 
@@ -105,6 +107,10 @@ On Vercel, use the default Next.js preset (framework: Next.js). No extra env var
 ## 📝 License
 
 MIT. See `LICENSE` if provided.
+
+## 👨‍💻 Author
+
+**Gourav Chaudhary** - Full-stack developer and creator of CipherStudio
 
 ## 🙌 Acknowledgements
 

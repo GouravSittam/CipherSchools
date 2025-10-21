@@ -564,6 +564,11 @@ export default function CipherStudio() {
         </div>
       </div>
 
+      {/* Author Attribution */}
+      <div className="absolute bottom-2 right-2 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors z-10">
+        Made by <span className="font-medium">Gourav Chaudhary❤️</span>
+      </div>
+
       {/* File Dialog */}
       <Dialog open={isFileDialogOpen} onOpenChange={setIsFileDialogOpen}>
         <DialogContent>

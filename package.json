@@ -1,6 +1,8 @@
 {
-    "name": "app",
-    "version": "0.1.0",
+    "name": "cipherstudio",
+    "version": "1.0.0",
+    "description": "A full-screen, responsive, browser-based React IDE built with Next.js and Sandpack",
+    "author": "Gourav Chaudhary",
     "private": true,
     "scripts": {
         "dev": "next dev --turbopack",

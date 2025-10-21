@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   title: "CipherStudio - Browser-Based React IDE",
   description:
     "A fully functional browser-based React IDE that runs entirely in the browser",
+  authors: [{ name: "Gourav Chaudhary" }],
+  creator: "Gourav Chaudhary",
 };
 
 export default function RootLayout({
