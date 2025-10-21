@@ -8,7 +8,8 @@ import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "CipherStudio - Browser-Based React IDE",
-  description: "A fully functional browser-based React IDE that runs entirely in the browser",
+  description:
+    "A fully functional browser-based React IDE that runs entirely in the browser",
 };
 
 export default function RootLayout({
@@ -17,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+    <html lang="en" suppressHydrationWarning className="h-screen w-screen overflow-hidden">
+      <body className="antialiased h-screen w-screen overflow-hidden m-0 p-0">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <ErrorReporter />
           <Script
@@ -31,7 +32,9 @@ export default function RootLayout({
             data-debug="true"
             data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
           />
-          {children}
+          <div className="h-screen w-screen overflow-hidden">
+            {children}
+          </div>
           <Toaster />
           <VisualEditsMessenger />
         </ThemeProvider>

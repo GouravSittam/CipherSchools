@@ -392,9 +392,9 @@ export default function CipherStudio() {
   }
 
   return (
-    <div className="h-screen w-full flex flex-col bg-background">
+    <div className="h-screen w-screen flex flex-col bg-background overflow-hidden">
       {/* Toolbar */}
-      <div className="border-b border-border bg-card px-2 sm:px-4 py-2 flex items-center justify-between flex-wrap gap-2">
+      <div className="sticky top-0 z-20 border-b border-border bg-card/80 backdrop-blur px-2 sm:px-4 py-2 flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
           <div className="flex items-center gap-2">
             <Code className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
@@ -528,7 +528,8 @@ export default function CipherStudio() {
       </div>
 
       {/* Main IDE Area */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 h-0 overflow-hidden">
+        <div className="h-full min-h-0">
         <SandpackProvider
           key={currentProjectId}
           template="react"
@@ -543,20 +544,24 @@ export default function CipherStudio() {
             editorHeight: "100%",
             activeFile: currentProject.activeFile,
           }}
+          className="h-full"
+          style={{ height: "100%" }}
         >
-          <SandpackLayout className="!h-full !border-0">
-            <div className="relative h-full">
-              <SandpackFileExplorer className="!h-full !min-w-[200px] sm:!min-w-[250px]" />
+          <SandpackLayout className="!h-full !border-0" style={{ height: "100%" }}>
+            <div className="relative h-full min-h-0">
+              <SandpackFileExplorer className="!h-full !min-h-0 !min-w-[200px] sm:!min-w-[250px]" />
               {/* File context menu - simplified for now */}
             </div>
-            <SandpackCodeEditor className="!h-full" showTabs showLineNumbers />
+            <SandpackCodeEditor className="!h-full !min-h-0" style={{ height: "100%" }} showTabs showLineNumbers />
             <SandpackPreview
-              className="!h-full"
+              className="!h-full !min-h-0"
+              style={{ height: "100%" }}
               showOpenInCodeSandbox={false}
               showRefreshButton={true}
             />
           </SandpackLayout>
         </SandpackProvider>
+        </div>
       </div>
 
       {/* File Dialog */}
