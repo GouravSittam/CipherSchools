@@ -44,3 +44,6 @@ next-env.d.ts
 .env.production.local
 .env
 
+# Use npm instead of pnpm for deployment
+pnpm-lock.yaml
+

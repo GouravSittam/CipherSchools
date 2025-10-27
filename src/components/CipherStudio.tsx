@@ -53,6 +53,7 @@ import {
   Edit,
   FolderPlus,
   Keyboard,
+  Github,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Label } from "./ui/label";
@@ -241,25 +242,25 @@ export default function CipherStudio() {
 
   const createNewFile = () => {
     if (!newFileName) return;
-    
+
     const fileName = newFileName.startsWith("/") ? newFileName : `/${newFileName}`;
-    
+
     // Check if file already exists
     if (currentProject.files[fileName]) {
       toast.error("File already exists!");
       return;
     }
-    
+
     setProjects((prev) =>
       prev.map((p) =>
         p.id === currentProjectId
           ? {
-              ...p,
-              files: {
-                ...p.files,
-                [fileName]: "",
-              },
-            }
+            ...p,
+            files: {
+              ...p.files,
+              [fileName]: "",
+            },
+          }
           : p
       )
     );
@@ -270,27 +271,27 @@ export default function CipherStudio() {
 
   const createNewFolder = () => {
     if (!newFileName) return;
-    
+
     const folderName = newFileName.startsWith("/") ? newFileName : `/${newFileName}`;
     const indexFile = `${folderName}/index.js`;
-    
+
     // Check if folder already exists
     const folderExists = Object.keys(currentProject.files).some(file => file.startsWith(folderName));
     if (folderExists) {
       toast.error("Folder already exists!");
       return;
     }
-    
+
     setProjects((prev) =>
       prev.map((p) =>
         p.id === currentProjectId
           ? {
-              ...p,
-              files: {
-                ...p.files,
-                [indexFile]: `// ${folderName} folder\n`,
-              },
-            }
+            ...p,
+            files: {
+              ...p.files,
+              [indexFile]: `// ${folderName} folder\n`,
+            },
+          }
           : p
       )
     );
@@ -340,11 +341,11 @@ export default function CipherStudio() {
       prev.map((p) =>
         p.id === currentProjectId
           ? {
-              ...p,
-              files: Object.fromEntries(
-                Object.entries(p.files).filter(([key]) => key !== fileName)
-              ),
-            }
+            ...p,
+            files: Object.fromEntries(
+              Object.entries(p.files).filter(([key]) => key !== fileName)
+            ),
+          }
           : p
       )
     );
@@ -353,31 +354,31 @@ export default function CipherStudio() {
 
   const renameFileAction = () => {
     if (!renameFile || !renameValue) return;
-    
+
     const newFileName = renameValue.startsWith("/") ? renameValue : `/${renameValue}`;
-    
+
     // Check if new name already exists
     if (currentProject.files[newFileName]) {
       toast.error("File with this name already exists!");
       return;
     }
-    
+
     setProjects((prev) =>
       prev.map((p) =>
         p.id === currentProjectId
           ? {
-              ...p,
-              files: Object.fromEntries(
-                Object.entries(p.files).map(([key, value]) => 
-                  key === renameFile ? [newFileName, value] : [key, value]
-                )
-              ),
-              activeFile: p.activeFile === renameFile ? newFileName : p.activeFile,
-            }
+            ...p,
+            files: Object.fromEntries(
+              Object.entries(p.files).map(([key, value]) =>
+                key === renameFile ? [newFileName, value] : [key, value]
+              )
+            ),
+            activeFile: p.activeFile === renameFile ? newFileName : p.activeFile,
+          }
           : p
       )
     );
-    
+
     toast.success(`File renamed to ${newFileName}`);
     setRenameFile(null);
     setRenameValue("");
@@ -395,7 +396,7 @@ export default function CipherStudio() {
       toast.error("Cannot delete the last project");
       return;
     }
-    
+
     try {
       await ProjectService.deleteProject(currentProjectId);
       const projectName = currentProject.name;
@@ -569,6 +570,22 @@ export default function CipherStudio() {
           <Button
             variant="outline"
             size="sm"
+            asChild
+          >
+            <a
+              href="https://github.com/GouravSittam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center"
+            >
+              <Github className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">GitHub</span>
+            </a>
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           >
             {theme === "dark" ? (
@@ -606,45 +623,39 @@ export default function CipherStudio() {
       {/* Main IDE Area */}
       <div className="flex-1 h-0 overflow-hidden">
         <div className="h-full min-h-0">
-        <SandpackProvider
-          key={currentProjectId}
-          template="react"
-          files={currentProject.files}
-          theme={theme === "dark" ? "dark" : "light"}
-          options={{
-            showNavigator: false,
-            showTabs: true,
-            showLineNumbers: true,
-            showInlineErrors: true,
-            wrapContent: true,
-            editorHeight: "100%",
-            activeFile: currentProject.activeFile,
-          }}
-          className="h-full"
-          style={{ height: "100%" }}
-        >
-          <SandpackLayout className="!h-full !border-0" style={{ height: "100%" }}>
-            <div className="relative h-full min-h-0">
-              <SandpackFileExplorer className="!h-full !min-h-0 !min-w-[200px] sm:!min-w-[250px]" />
-              {/* File context menu - simplified for now */}
-            </div>
-            <SandpackCodeEditor className="!h-full !min-h-0" style={{ height: "100%" }} showTabs showLineNumbers />
-            <SandpackPreview
-              className="!h-full !min-h-0"
-              style={{ height: "100%" }}
-              showOpenInCodeSandbox={false}
-              showRefreshButton={true}
-            />
-          </SandpackLayout>
-        </SandpackProvider>
+          <SandpackProvider
+            key={currentProjectId}
+            template="react"
+            files={currentProject.files}
+            theme={theme === "dark" ? "dark" : "light"}
+            options={{
+              activeFile: currentProject.activeFile,
+            }}
+            className="h-full"
+            style={{ height: "100%" }}
+          >
+            <SandpackLayout className="!h-full !border-0" style={{ height: "100%" }}>
+              <div className="relative h-full min-h-0">
+                <SandpackFileExplorer className="!h-full !min-h-0 !min-w-[200px] sm:!min-w-[250px]" />
+                {/* File context menu - simplified for now */}
+              </div>
+              <SandpackCodeEditor className="!h-full !min-h-0" style={{ height: "100%" }} showTabs showLineNumbers />
+              <SandpackPreview
+                className="!h-full !min-h-0"
+                style={{ height: "100%" }}
+                showOpenInCodeSandbox={false}
+                showRefreshButton={true}
+              />
+            </SandpackLayout>
+          </SandpackProvider>
         </div>
       </div>
 
       {/* Author Attribution */}
       <div className="absolute bottom-2 right-2 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors z-10">
-        Made by <a 
-          href="https://www.linkedin.com/in/GouravSittam/" 
-          target="_blank" 
+        Made by <a
+          href="https://www.linkedin.com/in/GouravSittam/"
+          target="_blank"
           rel="noopener noreferrer"
           className="font-medium hover:text-blue-400 transition-colors cursor-pointer"
         >
