@@ -109,7 +109,7 @@ npm install
 npm run dev
 ```
 
-🎉 **That's it!** Open [http://localhost:3000](http://localhost:3000) and start coding!
+🎉 **That's it!** Open [Cipher School](https://cipherschoolss.vercel.app/) and start coding!
 
 ---
 
@@ -122,9 +122,6 @@ npm run dev
 
 ### ☀️ Light Theme  
 ![Light Theme](public/light.png)
-
-### 📱 Mobile Responsive
-![Mobile View](https://via.placeholder.com/400x600/2563eb/ffffff?text=Mobile+Responsive)
 
 </div>
 
