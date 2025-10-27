@@ -642,7 +642,14 @@ export default function CipherStudio() {
 
       {/* Author Attribution */}
       <div className="absolute bottom-2 right-2 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors z-10">
-        Made by <span className="font-medium">Gourav Chaudhary❤️</span>
+        Made by <a 
+          href="https://www.linkedin.com/in/GouravSittam/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="font-medium hover:text-blue-400 transition-colors cursor-pointer"
+        >
+          Gourav Chaudhary❤️
+        </a>
       </div>
 
       {/* File Dialog */}
