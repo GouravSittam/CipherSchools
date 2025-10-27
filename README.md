@@ -118,10 +118,10 @@ npm run dev
 <div align="center">
 
 ### 🌙 Dark Theme
-![Dark Theme](https://via.placeholder.com/800x400/1a1a1a/ffffff?text=CipherStudio+Dark+Theme)
+![Dark Theme](public/dark.png)
 
 ### ☀️ Light Theme  
-![Light Theme](https://via.placeholder.com/800x400/ffffff/000000?text=CipherStudio+Light+Theme)
+![Light Theme](public/light.png)
 
 ### 📱 Mobile Responsive
 ![Mobile View](https://via.placeholder.com/400x600/2563eb/ffffff?text=Mobile+Responsive)
