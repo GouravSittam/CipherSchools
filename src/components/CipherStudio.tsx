@@ -166,36 +166,6 @@ const defaultProjects: Project[] = [
     activeFile: "/App.js",
     autoSave: true,
   },
-  {
-    id: "counter",
-    name: "Counter App",
-    files: {
-      "/App.js": `import { useState } from 'react';
-
-export default function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div style={{ padding: '40px', textAlign: 'center', fontFamily: 'system-ui' }}>
-      <h1>Counter: {count}</h1>
-      <button onClick={() => setCount(count + 1)} style={{ padding: '10px 20px', fontSize: '16px', marginRight: '10px', cursor: 'pointer' }}>
-        Increment
-      </button>
-      <button onClick={() => setCount(count - 1)} style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}>
-        Decrement
-      </button>
-    </div>
-  );
-}`,
-      "/styles.css": `body {
-  margin: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-}`,
-    },
-    activeFile: "/App.js",
-    autoSave: true,
-  },
 ];
 
 export default function CipherStudio() {
