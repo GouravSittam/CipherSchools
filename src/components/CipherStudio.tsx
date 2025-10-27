@@ -72,20 +72,95 @@ interface Project {
 const defaultProjects: Project[] = [
   {
     id: "default",
-    name: "Hello World",
+    name: "Welcome to CipherStudio",
     files: {
       "/App.js": `export default function App() {
   return (
-    <div style={{ padding: '20px', fontFamily: 'system-ui' }}>
-      <h1>Welcome to CipherStudio 🚀</h1>
-      <p>Start editing to see changes in real-time!</p>
+    <div
+      style={{
+        minHeight: "100vh",
+        margin: 0,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "system-ui, sans-serif",
+        background: "linear-gradient(135deg, #1e3c72, #2a5298, #4b6cb7)",
+        color: "#fff",
+        textAlign: "center",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "2.8rem",
+          fontWeight: "700",
+          textShadow: "0 0 10px rgba(255,255,255,0.3)",
+          marginBottom: "10px",
+        }}
+      >
+        Welcome to CipherStudio 🚀
+      </h1>
+      <p
+        style={{
+          fontSize: "1.2rem",
+          opacity: 0.9,
+          marginBottom: "30px",
+        }}
+      >
+        Start editing to see changes in real-time!
+      </p>
+      <div
+        style={{
+          position: "relative",
+        }}
+      >
+        <img
+          src="https://media.licdn.com/dms/image/v2/D5603AQF1YFqXAiD73g/profile-displayphoto-shrink_200_200/B56ZXmwlAsGoAc-/0/1743333251879?e=1762992000&v=beta&t=K23ncBWU-tS7Eyq2eoP039IccZo179giWAA3fRUo4gI"
+          alt="Gourav Chaudhary"
+          style={{
+            width: "200px",
+            height: "200px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            boxShadow: "0 0 25px rgba(255,255,255,0.5)",
+            transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = "scale(1.1)";
+            e.currentTarget.style.boxShadow = "0 0 40px rgba(255,255,255,0.8)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow = "0 0 25px rgba(255,255,255,0.5)";
+          }}
+        />
+      </div>
+      <p
+        style={{
+          marginTop: "25px",
+          fontSize: "1rem",
+          color: "rgba(255,255,255,0.8)",
+          letterSpacing: "0.5px",
+        }}
+      >
+        — Crafted by <strong>Gourav Chaudhary</strong> 💻
+      </p>
     </div>
   );
 }`,
       "/styles.css": `body {
   margin: 0;
   padding: 0;
-  background: #f5f5f5;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Additional styles for enhanced experience */
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100vh;
 }`,
     },
     activeFile: "/App.js",
